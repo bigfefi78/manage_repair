@@ -1,0 +1,330 @@
+<!-- Version 2.5 - web/repair/detail.html (Aggiunta Campi Codice/Matricola 2) -->
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dettagli Riparazione</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/custom.css">
+    <!-- Link per le icone Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="/main.html">
+                <i class="bi bi-gear-fill me-2"></i> Gestionale Reparto Produzione
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/main.html">
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/repair/index.html">Riparazioni</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Dettagli Riparazione</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Ordini (futuro)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Documentazione (futuro)</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 mb-5">
+        <h1 class="mb-4 text-center text-info" id="pageTitle">Dettagli Riparazione</h1>
+        <p class="lead text-center mb-5" id="pageSubtitle">Visualizza o modifica i dettagli di una riparazione.</p>
+
+        <form id="repairForm">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Informazioni Generali</h5>
+                </div>
+                <div class="card-body">
+                    <input type="hidden" id="repairId" name="repairId">
+
+                    <div class="border rounded overflow-hidden mb-4">
+
+                        <div class="row g-0">
+
+                            <!-- BLOCCO DATI (SINISTRA) -->
+                            <div class="col-md-9">
+
+                                <!-- Codice -->
+                                <div class="row g-0 border-bottom align-items-center">
+                                    <div class="col-md-4 bg-light fw-bold px-3 py-2">
+                                        Code / Codice
+                                    </div>
+                                    <div class="col-md-4 px-3 py-2">
+                                        <input type="text" class="form-control" id="code" name="code">
+                                    </div>
+                                    <div class="col-md-4 px-3 py-2">
+                                        <input type="text" class="form-control" id="code2" name="code_2">
+                                    </div>
+                                </div>
+
+                                <!-- Matricola -->
+                                <div class="row g-0 border-bottom align-items-center">
+                                    <div class="col-md-4 bg-light fw-bold px-3 py-2">
+                                        Serial No / Matricola
+                                    </div>
+                                    <div class="col-md-4 px-3 py-2">
+                                        <input type="text" class="form-control" id="serialNo" name="serial_no">
+                                    </div>
+                                    <div class="col-md-4 px-3 py-2">
+                                        <input type="text" class="form-control" id="serialNo2" name="serial_no_2">
+                                    </div>
+                                </div>
+
+                                <!-- Repair OA -->
+                                <div class="row g-0 border-bottom align-items-center">
+                                    <div class="col-md-4 bg-light fw-bold px-3 py-2">
+                                        Repair OA / Ordine di riparazione
+                                    </div>
+                                    <div class="col-md-4 px-3 py-2">
+                                        <input type="text" class="form-control" id="repairOa" name="repair_oa" required>
+                                    </div>
+                                    <div class="col-md-4 px-3 py-2">
+                                        <input type="text" class="form-control" id="repairOa_2" name="repair_oa_2" required>
+                                    </div>
+                                </div>
+
+                                <!-- Service ODS -->
+                                <div class="row g-0 align-items-center">
+                                    <div class="col-md-4 bg-light fw-bold px-3 py-2">
+                                        Service ODS / Ordine di servizio
+                                    </div>
+                                    <div class="col-md-4 px-3 py-2">
+                                        <input type="text" class="form-control" id="serviceOds" name="service_ods"
+                                            required>
+                                    </div>
+                                    <div class="col-md-4 px-3 py-2">
+                                        <input type="text" class="form-control" id="serviceOds_2" name="service_ods_2">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- BLOCCO STATO (DESTRA) -->
+                            <div
+                                class="col-md-3 border-start d-flex flex-column justify-content-center align-items-center p-3">
+
+                                <div class="fw-bold mb-2 text-uppercase text-muted">
+                                    Stato Riparazione
+                                </div>
+
+                                <select class="form-select text-center fw-bold fs-5" id="status" name="status">
+                                    <option value="Aperto">Aperto</option>
+                                    <option value="Chiuso">Chiuso</option>
+                                    <option value="Sospeso">Sospeso</option>
+                                </select>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Tipo di Riparazione <span class="text-danger">*</span></label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="repaired_material_type"
+                                id="repairedMaterial" value="Repaired" checked>
+                            <label class="form-check-label" for="repairedMaterial">
+                                Materiale riparato
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="repaired_material_type"
+                                id="nonRepairedMaterial" value="Non-repairable">
+                            <label class="form-check-label" for="nonRepairedMaterial">
+                                Materiale non riparabile (da rottamare)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="repaired_material_type"
+                                id="noProblemFound" value="No problem found">
+                            <label class="form-check-label" for="noProblemFound">
+                                Nessun problema rilevato
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Dettagli Problema e Note</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="faultFound" class="form-label">Fault found / Difetto riscontrato</label>
+                        <textarea class="form-control" id="faultFound" name="fault_found" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="remarksNote" class="form-label">Remarks / Note</label>
+                        <textarea class="form-control" id="remarksNote" name="remarks_note" rows="5"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Pezzi Sostituiti</h5>
+                </div>
+                <div class="card-body">
+                    <div id="replacedPartsContainer">
+                        <!-- Le righe dei pezzi sostituiti verranno aggiunte qui via JS -->
+                    </div>
+                    <button type="button" class="btn btn-secondary btn-sm mt-3" id="addPartBtn"><i
+                            class="bi bi-plus-circle me-2"></i>Aggiungi Pezzo</button>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Ore Impiegate</h5>
+                </div>
+                <div class="card-body">
+                    <div id="hoursSpentContainer">
+                        <!-- Le righe delle ore impiegate verranno aggiunte qui via JS -->
+                    </div>
+                    <button type="button" class="btn btn-secondary btn-sm mt-3" id="addHoursBtn"><i
+                            class="bi bi-plus-circle me-2"></i>Aggiungi Ore</button>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Test e Verifiche</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" value="Adjustment / Regolazione"
+                                    id="test1" name="test_Adjustment" data-test-notes-id="null">
+                                <label class="form-check-label" for="test1">1. Adjustment / Regolazione</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" value="Leak test / Prova di tenuta"
+                                    id="test2" name="test_LeakTest" data-test-notes-id="null">
+                                <label class="form-check-label" for="test2">2. Leak test / Prova di tenuta</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" value="ESACT" id="test3"
+                                    name="test_ESACT" data-test-notes-id="null">
+                                <label class="form-check-label" for="test3">3. ESACT</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" value="Repeatability / Ripetibilità"
+                                    id="test4" name="test_Repeatability" data-test-notes-id="null">
+                                <label class="form-check-label" for="test4">4. Repeatability / Ripetibilità</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" value="Drift / Deriva" id="test5"
+                                    name="test_Drift" data-test-notes-id="null">
+                                <label class="form-check-label" for="test5">5. Drift / Deriva</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox"
+                                    value="Electrical test / Collaudo Elettrico" id="test6" name="test_ElectricalTest"
+                                    data-test-notes-id="null">
+                                <label class="form-check-label" for="test6">6. Electrical test / Collaudo
+                                    Elettrico</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox"
+                                    value="Functional test / Collaudo Funzionale" id="test7" name="test_FunctionalTest"
+                                    data-test-notes-id="null">
+                                <label class="form-check-label" for="test7">7. Functional test / Collaudo
+                                    Funzionale</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" value="Dynamic test / Test Dinamico"
+                                    id="test8" name="test_DynamicTest" data-test-notes-id="null">
+                                <label class="form-check-label" for="test8">8. Dynamic test / Test Dinamico</label>
+                            </div>
+                            <div class="form-check mb-2 d-flex align-items-center">
+                                <input class="form-check-input me-2" type="checkbox" value="Any other / Altri:"
+                                    id="test9" name="test_AnyOther">
+                                <label class="form-check-label text-nowrap" for="test9">9. Any other / Altri:</label>
+                                <input type="text" class="form-control form-control-sm ms-2" id="test9Notes"
+                                    name="test_AnyOther_notes">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Firme e Date</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-2">
+                            <label for="reportDate" class="form-label">Data Report</label>
+                            <input type="date" class="form-control" id="reportDate" name="report_date">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="signatureName" class="form-label">Firma Tecnico</label>
+                            <input type="text" class="form-control" id="signatureName" name="signature_name">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="signatureName2" class="form-label">Firma Tecnico</label>
+                            <input type="text" class="form-control" id="signatureName2" name="signature_name_2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <div>
+                    <button type="button" class="btn btn-secondary me-2" onclick="navigateTo('/repair/index.html')"><i
+                            class="bi bi-x-circle me-2"></i>Annulla</button>
+                    <button type="button" class="btn btn-danger" id="deleteRepairDetailBtn" style="display: none;"><i
+                            class="bi bi-trash me-2"></i>Elimina</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-warning me-2" id="printReportBtn" style="display: none;"><i
+                            class="bi bi-printer me-2"></i>Stampa Report</button>
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-save me-2"></i>Salva</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS (bundle include Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <!-- Eel JavaScript (per comunicare con Python) -->
+    <script type="text/javascript" src="/eel.js"></script>
+    <!-- Custom JavaScript globale -->
+    <script type="text/javascript" src="/js/app.js"></script>
+    <!-- JavaScript specifico per la sezione dettaglio riparazioni -->
+    <script type="text/javascript" src="/js/repair_detail.js"></script>
+
+</body>
+
+</html>

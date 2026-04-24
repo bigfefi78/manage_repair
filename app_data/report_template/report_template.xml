@@ -1,0 +1,268 @@
+<!-- Version 3.1 - app_data/report_templates/repair_report.html -->
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8">
+      <title>Rapporto di Riparazione</title>
+      <style>
+        @page {
+            size: A4;
+            margin: 20mm;
+            /* Piè di pagina fisso */
+            @bottom-left {
+                content: "DR 0077 rev 00";
+                font-family: 'Helvetica', sans-serif;
+                font-size: 8pt;
+            }
+            @bottom-center {
+                content: "rif PO 105";
+                font-family: 'Helvetica', sans-serif;
+                font-size: 8pt;
+            }
+            @bottom-right {
+                content: "page " counter(page); /* WeasyPrint gestisce counter(pages) per Page X of Y */
+                font-family: 'Helvetica', sans-serif;
+                font-size: 8pt;
+            }
+        }
+        body {
+            font-family: 'Helvetica', sans-serif;
+            font-size: 9pt;
+            color: #333;
+        }
+        h1 {
+            font-size: 16pt;
+            text-align: center;
+            font-weight: bold;
+            color: #003366;
+            margin-bottom: 5mm;
+        }
+        h2 {
+            font-size: 12pt;
+            text-align: center;
+            font-weight: bold;
+            color: #005A9C;
+            margin-bottom: 8mm;
+        }
+        .section-title {
+            font-size: 10pt;
+            font-weight: bold;
+            color: #00008B;
+            margin-top: 6mm;
+            margin-bottom: 3mm;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 2mm;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 5mm;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 1mm 2mm;
+            text-align: left;
+            vertical-align: middle;
+        }
+        th {
+            background-color: #D9EAF7;
+            font-weight: bold;
+            font-size: 9pt;
+            text-align: center;
+        }
+        .bg-light {
+            background-color: #F0F0F0;
+            font-weight: bold;
+            color: #005A9C; /* Colore più scuro per le etichette */
+        }
+        .text-center {
+            text-align: center;
+        }
+        .small-text {
+            font-size: 8pt;
+        }
+        .signature-cell {
+            vertical-align: top; /* Allinea il testo in alto */
+            height: 15mm; /* Altezza fissa per la cella della firma */
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 2mm;
+        }
+        .checkbox-label {
+            margin-left: 2mm;
+        }
+        .checkbox-box {
+            width: 4mm;
+            height: 4mm;
+            border: 1px solid black;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 4mm; /* Centra la 'X' */
+            font-size: 7pt;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>REPAIR REPORT</h1>
+      <h2>RAPPORTO DI RIPARAZIONE</h2>
+
+      <div class="section-title">Informazioni Generali</div>
+      <table>
+        <tr>
+          <td class="bg-light" style="width: 18%;">Code / Codice:</td>
+          <td style="width: 32%;">{{ code }}</td>
+          <td class="bg-light" style="width: 18%;">Code / Codice (2):</td>
+          <td style="width: 32%;">{{ code_2 }}</td>
+        </tr>
+        <tr>
+          <td class="bg-light">Serial No / Matricola:</td>
+          <td>{{ serial_no }}</td>
+          <td class="bg-light">Serial No / Matricola (2):</td>
+          <td>{{ serial_no_2 }}</td>
+        </tr>
+        <tr>
+          <td class="bg-light">Repair OA / Ordine di riparazione:</td>
+          <td>{{ repair_oa }}</td>
+          <td class="bg-light">Repair OA (2):</td>
+          <td>{{ repair_oa_2 }}</td>
+        </tr>
+        <tr>
+          <td class="bg-light">Service ODS / Ordine di servizio:</td>
+          <td>{{ service_ods }}</td>
+          <td class="bg-light">Service ODS (2):</td>
+          <td>{{ service_ods_2 }}</td>
+        </tr>
+        <tr>
+          <td class="bg-light">Stato:</td>
+          <td colspan="3">{{ status }}</td>
+        </tr>
+      </table>
+
+      <div class="section-title">Tipo di Riparazione</div>
+      <table>
+        <tr>
+          <td style="width: 33%;">
+            <div class="checkbox-container">
+              <span class="checkbox-box">{{ repaired_material_checked }}</span>
+              <span class="checkbox-label small-text">Materiale riparato</span>
+            </div>
+          </td>
+          <td style="width: 33%;">
+            <div class="checkbox-container">
+              <span class="checkbox-box">{{ non_repairable_material_checked }}</span>
+              <span class="checkbox-label small-text">Materiale non riparabile (da rottamare)</span>
+            </div>
+          </td>
+          <td style="width: 34%;">
+            <div class="checkbox-container">
+              <span class="checkbox-box">{{ no_problem_found_checked }}</span>
+              <span class="checkbox-label small-text">Nessun problema rilevato</span>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <div class="section-title">Difetto riscontrato</div>
+      <p>{{ fault_found }}</p>
+
+      <div class="section-title">Pezzi sostituiti</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 20%;">Code / Codice</th>
+            <th style="width: 40%;">Description / Descrizione</th>
+            <th style="width: 15%;">Amount / Quantità</th>
+            <th style="width: 25%;">Position** / Posizione**</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for part in parts %}
+          <tr>
+            <td>{{ part.part_code }}</td>
+            <td>{{ part.description }}</td>
+            <td class="text-center">{{ part.amount }}</td>
+            <td>{{ part.position }}</td>
+          </tr>
+            {% else %}
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="section-title">Ore impiegate</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 60%;">Technician Name / Nome Tecnico</th>
+            <th style="width: 40%;">Hours / Ore</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for hour_entry in hours %}
+          <tr>
+            <td>{{ hour_entry.name }}</td>
+            <td class="text-center">{{ hour_entry.hours }}</td>
+          </tr>
+            {% else %}
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="section-title">Prove e verifiche eseguite</div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 45%;">Test Name</th>
+            <th style="width: 10%;">Checked</th>
+            <th style="width: 45%;">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for test in tests_formatted %}
+          <tr>
+            <td>{{ test.test_name }}</td>
+            <td class="text-center">{{ test.checked }}</td>
+            <td>{{ test.notes }}</td>
+          </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+      <p class="small-text">
+        <i>*Indicate with a cross / Indicare con una croce ** In case of electronic cards only / Solo in caso di schede elettroniche</i>
+      </p>
+
+      <div class="section-title">Note</div>
+      <p>{{ remarks_note }}</p>
+
+      <div class="section-title">Firme e Data</div>
+      <table>
+        <tr>
+          <td class="bg-light" style="width: 15%;">Data:</td>
+          <td style="width: 35%;">{{ report_date }}</td>
+          <td class="bg-light" style="width: 15%;">Firma:</td>
+          <td class="signature-cell" style="width: 35%;">
+                {% if signature_name %}{{ signature_name }}{% endif %}
+                {% if signature_name and signature_name_2 %}<br/>
+{% endif %}
+                {% if signature_name_2 %}{{ signature_name_2 }}{% endif %}
+          </td>
+        </tr>
+      </table>
+
+    </body>
+  </html>
