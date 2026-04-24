@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Riparazioni – Gestione Riparazioni{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3"><i class="bi bi-list-ul me-2"></i>Riparazioni</h1>
+  <a href="{{ url_for('nuova_riparazione') }}" class="btn btn-primary">
+    <i class="bi bi-plus-circle me-1"></i>Nuova
+  </a>
+</div>
+
+<div class="mb-3 d-flex gap-2 flex-wrap">
+  <a href="{{ url_for('lista_riparazioni') }}"
+     class="btn btn-sm {{ 'btn-dark' if not filtro_stato else 'btn-outline-secondary' }}">Tutti</a>
+  {% for stato_key, stato_label in stati.items() %}
+  <a href="{{ url_for('lista_riparazioni', stato=stato_key) }}"
+     class="btn btn-sm btn-{{ stati_badge[stato_key] }} {{ '' if filtro_stato == stato_key else 'opacity-75' }}">
+    {{ stato_label }}
+  </a>
+  {% endfor %}
+</div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Cliente</th>
+          <th>Telefono</th>
+          <th>Dispositivo</th>
+          <th>Stato</th>
+          <th>Tecnico</th>
+          <th>Data</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in riparazioni %}
+        <tr>
+          <td>{{ r.id }}</td>
+          <td>{{ r.nome_cliente }}</td>
+          <td>{{ r.telefono_cliente }}</td>
+          <td>{{ r.tipo_dispositivo }} – {{ r.marca_modello }}</td>
+          <td><span class="badge text-bg-{{ r.stato_badge() }}">{{ r.stato_label() }}</span></td>
+          <td>{{ r.tecnico or '—' }}</td>
+          <td>{{ r.data_creazione.strftime('%d/%m/%Y') }}</td>
+          <td>
+            <a href="{{ url_for('dettaglio_riparazione', id=r.id) }}" class="btn btn-sm btn-outline-primary">
+              <i class="bi bi-eye"></i>
+            </a>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="8" class="text-center text-muted py-3">Nessuna riparazione trovata.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

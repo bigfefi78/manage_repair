@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Riparazione #{{ riparazione.id }} – Gestione Riparazioni{% endblock %}
+
+{% block content %}
+<div class="mb-3">
+  <a href="{{ url_for('lista_riparazioni') }}" class="text-decoration-none">
+    <i class="bi bi-arrow-left me-1"></i>Torna alla lista
+  </a>
+</div>
+
+<div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-2">
+  <h1 class="h3">
+    Riparazione #{{ riparazione.id }}
+    <span class="badge text-bg-{{ riparazione.stato_badge() }} fs-6 ms-2">{{ riparazione.stato_label() }}</span>
+  </h1>
+  <div class="d-flex gap-2">
+    <a href="{{ url_for('modifica_riparazione', id=riparazione.id) }}" class="btn btn-warning">
+      <i class="bi bi-pencil me-1"></i>Modifica
+    </a>
+    <form method="post" action="{{ url_for('elimina_riparazione', id=riparazione.id) }}"
+          onsubmit="return confirm('Eliminare questa riparazione?')">
+      <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Elimina</button>
+    </form>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header"><i class="bi bi-person me-2"></i>Cliente</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-sm-5">Nome</dt>
+          <dd class="col-sm-7">{{ riparazione.nome_cliente }}</dd>
+          <dt class="col-sm-5">Telefono</dt>
+          <dd class="col-sm-7">{{ riparazione.telefono_cliente }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header"><i class="bi bi-phone me-2"></i>Dispositivo</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-sm-5">Tipo</dt>
+          <dd class="col-sm-7">{{ riparazione.tipo_dispositivo }}</dd>
+          <dt class="col-sm-5">Marca / Modello</dt>
+          <dd class="col-sm-7">{{ riparazione.marca_modello }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header"><i class="bi bi-exclamation-circle me-2"></i>Problema</div>
+      <div class="card-body">{{ riparazione.descrizione_problema }}</div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header"><i class="bi bi-info-circle me-2"></i>Dettagli</div>
+      <div class="card-body">
+        <dl class="row mb-0">
+          <dt class="col-sm-5">Tecnico</dt>
+          <dd class="col-sm-7">{{ riparazione.tecnico or '—' }}</dd>
+          <dt class="col-sm-5">Costo</dt>
+          <dd class="col-sm-7">{{ '€ %.2f' % riparazione.costo if riparazione.costo else '—' }}</dd>
+          <dt class="col-sm-5">Creata il</dt>
+          <dd class="col-sm-7">{{ riparazione.data_creazione.strftime('%d/%m/%Y %H:%M') }}</dd>
+          <dt class="col-sm-5">Aggiornata il</dt>
+          <dd class="col-sm-7">{{ riparazione.data_aggiornamento.strftime('%d/%m/%Y %H:%M') }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  {% if riparazione.note %}
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header"><i class="bi bi-journal-text me-2"></i>Note</div>
+      <div class="card-body">{{ riparazione.note }}</div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard – Gestione Riparazioni{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3"><i class="bi bi-speedometer2 me-2"></i>Dashboard</h1>
+  <a href="{{ url_for('nuova_riparazione') }}" class="btn btn-primary">
+    <i class="bi bi-plus-circle me-1"></i>Nuova Riparazione
+  </a>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-lg-3">
+    <div class="card text-bg-secondary">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="fs-2 fw-bold">{{ totale }}</div>
+            <div>Totale</div>
+          </div>
+          <i class="bi bi-clipboard2-pulse fs-1 opacity-50"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% for stato_key, stato_label in stati.items() %}
+  <div class="col-sm-6 col-lg-3">
+    <div class="card text-bg-{{ stati_badge[stato_key] }}">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <div class="fs-2 fw-bold">{{ conteggi[stato_key] }}</div>
+            <div>{{ stato_label }}</div>
+          </div>
+          <i class="bi bi-wrench fs-1 opacity-50"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span><i class="bi bi-clock-history me-2"></i>Ultime 5 Riparazioni</span>
+    <a href="{{ url_for('lista_riparazioni') }}" class="btn btn-sm btn-outline-secondary">Vedi tutte</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Cliente</th>
+          <th>Dispositivo</th>
+          <th>Stato</th>
+          <th>Data</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in ultime %}
+        <tr>
+          <td>{{ r.id }}</td>
+          <td>{{ r.nome_cliente }}</td>
+          <td>{{ r.tipo_dispositivo }} – {{ r.marca_modello }}</td>
+          <td><span class="badge text-bg-{{ r.stato_badge() }}">{{ r.stato_label() }}</span></td>
+          <td>{{ r.data_creazione.strftime('%d/%m/%Y') }}</td>
+          <td>
+            <a href="{{ url_for('dettaglio_riparazione', id=r.id) }}" class="btn btn-sm btn-outline-primary">
+              <i class="bi bi-eye"></i>
+            </a>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-center text-muted py-3">Nessuna riparazione presente.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
